@@ -200,6 +200,7 @@ func (c *Conn) mux(errch chan error) {
 
 	for {
 		select {
+		// 发送打包好的消息
 		case t := <-c.send:
 			// find an unused tag
 			for t := txns[n]; t != nil; t = txns[n] {
@@ -224,6 +225,7 @@ func (c *Conn) mux(errch chan error) {
 			if err != nil {
 				goto error
 			}
+		// 接收解析好的消息
 		case buf := <-c.msg:
 			var r response
 			err = proto.Unmarshal(buf, &r)
